@@ -1,9 +1,9 @@
 package org.nulldev.LobbyFly;
-
+ 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.nulldev.LobbyFly.Main;
 
 public class CmdHandle implements CommandExecutor {
-
+ 
     Main main = new Main();
     public List<?> denylist = new ArrayList<String>();
     public String prefix = Main.getInstance().getConfig().getString("prefix");
@@ -21,12 +21,12 @@ public class CmdHandle implements CommandExecutor {
     public File denyyml = new File(main.getDataFolder(), "denylist.yml");
     private FileConfiguration denys;
     public FileConfiguration getOtherConfig() { return this.denys; }
-    
+ 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] a) {
         inst = this;
-	@SuppressWarnings("unused")
-	Player p; //p = (Player)sender;
+        @SuppressWarnings("unused")
+        Player p; //p = (Player)sender;
         //Need to find a better way to do the Colwrap without always writing Main()
         if (!sender.hasPermission("lobbyfly.admin") || !sender.isOp()) {
             sender.sendMessage(main.colWrap(prefix + " &cNo permission!"));
@@ -53,21 +53,18 @@ public class CmdHandle implements CommandExecutor {
         if (a[0].equalsIgnoreCase("deny")) {
             String toDeny = a[1];
             this.getOtherConfig().set("denied", toDeny); //No idea if that works as expected
-	    return true;
+            return true;
         }
         if (a[0].equalsIgnoreCase("denylist")) {
-        	denylist = this.getInstance().getOtherConfig().getList("denied");
+            denylist = this.getInstance().getOtherConfig().getList("denied");
             if (denylist != null && denylist.size() != 0){ //Size instead of length since its a list array
-            	sender.sendMessage(main.colWrap(prefix + " &fList of denied users:"));
-            	sender.sendMessage(main.colWrap(prefix + " &f" + denylist)); //this will probs be wrong formatted 
-            	//TODO: Format correctly
+                sender.sendMessage(main.colWrap(prefix + " &fList of denied users:"));
+                sender.sendMessage(main.colWrap(prefix + " &f" + denylist)); //this will probs be wrong formatted 
+                //TODO: Format correctly
             }
             else sender.sendMessage(main.colWrap(prefix + " &fThere are no denied users."));
             return true; //Is this needed? 
         }
-        if (a[0].equalsIgnoreCase("undeny")) {
-            p = (Player)sender;
-        }
-        return true;
+        if (a[0].equalsIgnoreCase("undeny")) { p = (Player)sender; }
     }
 }
